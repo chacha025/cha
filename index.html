@@ -25,9 +25,6 @@
         box-sizing: border-box;
         pointer-events: none; /* ガイド枠がクリックを妨げないようにする */
       }
-      #download {
-        display: none; /* 初期状態では非表示 */
-      }
     </style>
   </head>
   <body>
@@ -71,21 +68,17 @@
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
 
-        canvas.toBlob((blob) => {
-          const url = URL.createObjectURL(blob);
-          let photo = document.getElementById("photo");
-          photo.setAttribute("src", url);
+        const dataURL = canvas.toDataURL("image/png");
+        let photo = document.getElementById("photo");
+        photo.setAttribute("src", dataURL);
 
 
-          // ダウンロードリンクを設定する
-          const downloadButton = document.getElementById("download");
-          downloadButton.href = url;
-          downloadButton.download = "captured_image.png";
-          downloadButton.style.display = "block";
-        }, "image/png");
+        // ダウンロードリンクを設定する
+        const downloadButton = document.getElementById("download");
+        downloadButton.href = dataURL;
+        downloadButton.download = "captured_image.png";
+        downloadButton.style.display = "block";
       });
     </script>
   </body>
 </html>
-
-
