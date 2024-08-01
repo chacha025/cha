@@ -8,110 +8,111 @@
       .camera-container {
         position: relative;
         width: 100%;
-        max-width: 640px;
-        margin: auto;
+        max-width: 800px;
       }
       video {
         width: 100%;
-        height: auto;
+        display: block; /* displayをblockに設定して横幅を強制する */
       }
       .guide-frame {
         position: absolute;
-        top: 10%;
-        left: 10%;
-        width: 80%;
-        height: 80%;
-        border: 2px dashed red;
-        box-sizing: border-box;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+
+        width: 60%;
+        aspect-ratio: 4 / 3;
+        overflow: hidden;
         pointer-events: none; /* ガイド枠がクリックを妨げないようにする */
+      }
+      #photo {
+        height: 200px;
       }
     </style>
   </head>
   <body>
     <div class="camera-container">
       <video id="video" autoplay muted playsinline></video>
-      <div class="guide-frame"></div>
+      <div>
+        <img class="guide-frame" src="枠画像.png" alt="ガイド" />
+      </div>
     </div>
     <button id="capture">撮影</button>
+    <button id="toggle-camera">カメラ切り替え</button>
     <a id="download" style="display: none">ダウンロード</a>
-    <!-- ダウンロードリンク -->
-    <button id="share" style="display: none">共有</button>
-    <!-- 共有ボタン -->
+
+
     <canvas id="canvas" style="display: none"></canvas>
     <div>
-      <img id="photo" alt="撮影した画像" />
+      <img id="photo" alt="ここに撮影した画像がでます" />
     </div>
 
+
     <script>
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          const video = document.getElementById("video");
-          video.srcObject = stream;
-        })
-        .catch((error) => {
-          console.error("カメラにアクセスできませんでした:", error);
-        });
+      navigator.mediaDevices.getUserMedia({ video: true });
+
+
+      let currentStream;
+      let isFrontCamera = true;
+      function startCamera() {
+        const constraints = {
+          video: {
+            facingMode: isFrontCamera ? "user" : "environment",
+          },
+        };
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then((stream) => {
+            if (currentStream) {
+              currentStream.getTracks().forEach((track) => track.stop());
+            }
+            currentStream = stream;
+            const video = document.getElementById("video");
+            video.srcObject = stream;
+          })
+          .catch((error) => {
+            console.error("カメラにアクセスできませんでした:", error);
+          });
+      }
+
 
       document.getElementById("capture").addEventListener("click", () => {
+        //撮影ボタン
         const canvas = document.getElementById("canvas");
         const video = document.getElementById("video");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const context = canvas.getContext("2d");
 
+
+        // 画像を水平に反転する
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
 
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+        //画像を表示
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
         const dataURL = canvas.toDataURL("image/png");
         let photo = document.getElementById("photo");
         photo.setAttribute("src", dataURL);
+        // console.log("キャプチャした画像のデータURL:", dataURL);
+
 
         // ダウンロードリンクを設定する
         const downloadButton = document.getElementById("download");
         downloadButton.href = dataURL;
+        //画像に名前をつけて、ダウンロード可能に
         downloadButton.download = "captured_image.png";
-        downloadButton.style.display = "block"; // ダウンロードボタンを表示する
-
-        const blob = dataURLToBlob(dataURL); // 修正: dataURLToBlob関数を使用
-        const imageFile = new File([blob], "image.png", {
-          type: "image/png",
-        });
-
-        const shareButton = document.getElementById("share");
-        shareButton.style.display = "block"; // 共有ボタンを表示する
-        shareButton.addEventListener("click", () => {
-  
-          if (navigator.share) {
-            navigator
-              .share({
-                text: "共有テスト",
-                url: dataURL, // 修正: 画像データをURLとして共有
-              })
-              .then(() => {
-                console.log("共有成功.");
-              })
-              .catch((error) => {
-                console.error("共有失敗:", error);
-              });
-          } else {
-            alert("このブラウザは共有機能に対応していません。");
-          }
-        });
+        downloadButton.style.display = "block";
       });
 
-      function dataURLToBlob(dataURL) {
-        const [header, data] = dataURL.split(',');
-        const mime = header.split(':')[1].split(';')[0];
-        const binary = atob(data);
-        const array = [];
-        for (let i = 0; i < binary.length; i++) {
-          array.push(binary.charCodeAt(i));
-        }
-        return new Blob([new Uint8Array(array)], { type: mime });
-      }
+
+      document.getElementById("toggle-camera").addEventListener("click", () => {
+        isFrontCamera = !isFrontCamera;
+        startCamera();
+      });
+      startCamera();
     </script>
   </body>
 </html>
