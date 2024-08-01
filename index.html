@@ -34,11 +34,11 @@
     </div>
     <button id="capture">撮影</button>
     <a id="download" style="display: none;">ダウンロード</a> <!-- ダウンロードリンク -->
-    <button id="share" style="display: none;">共有</button> <!-- 共有ボタン -->
     <canvas id="canvas" style="display: none"></canvas>
     <div>
       <img id="photo" alt="撮影した画像" />
     </div>
+
 
     <script>
       navigator.mediaDevices
@@ -51,6 +51,7 @@
           console.error("カメラにアクセスできませんでした:", error);
         });
 
+
       document.getElementById("capture").addEventListener("click", () => {
         const canvas = document.getElementById("canvas");
         const video = document.getElementById("video");
@@ -58,40 +59,25 @@
         canvas.height = video.videoHeight;
         const context = canvas.getContext("2d");
 
+
         // 画像を水平に反転する
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
 
+
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
 
         const dataURL = canvas.toDataURL("image/png");
         let photo = document.getElementById("photo");
         photo.setAttribute("src", dataURL);
+
 
         // ダウンロードリンクを設定する
         const downloadButton = document.getElementById("download");
         downloadButton.href = dataURL;
         downloadButton.download = "captured_image.png";
         downloadButton.style.display = "block";
-
-        // 共有ボタンを設定する
-        const shareButton = document.getElementById("share");
-        shareButton.style.display = "block";
-        shareButton.addEventListener("click", () => {
-          if (navigator.share) {
-            navigator.share({
-              title: '撮影した画像',
-              text: '画像を共有します。',
-              url: dataURL
-            }).then(() => {
-              console.log('共有成功');
-            }).catch((error) => {
-              console.error('共有失敗:', error);
-            });
-          } else {
-            alert('このブラウザは共有機能に対応していません。');
-          }
-        });
       });
     </script>
   </body>
