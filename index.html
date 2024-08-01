@@ -37,6 +37,9 @@
     <canvas id="canvas" style="display: none"></canvas>
 
     <script>
+      navigator.mediaDevices
+  .getUserMedia({ video: true })
+
       let currentStream;
       let isFrontCamera = true; 
       function startCamera() {
