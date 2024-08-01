@@ -60,7 +60,7 @@
         const context = canvas.getContext("2d");
 
 
-        // 画像を水平に反転する
+
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
 
@@ -73,7 +73,6 @@
         photo.setAttribute("src", dataURL);
 
 
-        // ダウンロードリンクを設定する
         const downloadButton = document.getElementById("download");
         downloadButton.href = dataURL;
         downloadButton.download = "captured_image.png";
