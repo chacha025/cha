@@ -39,13 +39,8 @@ video {
 
     <script>
     
-navigator.mediaDevices
-        .getUserMedia({
-          video: {
-            facingMode: { exact: "environment" },
-          },
-          audio: true,
-        })
+   navigator.mediaDevices
+  .getUserMedia({ video: ture, facingMode: { exact: "environment" } })
   .then((stream) => {
     const video = document.getElementById("video");
     video.srcObject = stream;
