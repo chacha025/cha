@@ -55,41 +55,17 @@
       <button id="toggleCamera">カメラ切り替え</button>
     </div>
     <canvas id="canvas" style="display: none"></canvas>
+    
+<script>
+      navigator.mediaDevices
+        .getUserMedia({ video: true, facingMode: "user" })
 
-    <script>
-      let currentStream = null;
-      let currentDeviceIndex = 0;
-      let devices = [];
-
-      function stopStream() {
-        if (currentStream) {
-          currentStream.getTracks().forEach(track => track.stop());
-        }
-      }
-
-      function startCamera(deviceId) {
-        navigator.mediaDevices
-          .getUserMedia({ video: { deviceId: { exact: deviceId } } })
-          .then((stream) => {
-            stopStream();
-            currentStream = stream;
-            const video = document.getElementById("video");
-            video.srcObject = stream;
-          })
-          .catch((error) => {
-            console.error("カメラにアクセスできませんでした:", error);
-          });
-      }
-
-      navigator.mediaDevices.enumerateDevices()
-        .then(deviceInfos => {
-          devices = deviceInfos.filter(deviceInfo => deviceInfo.kind === 'videoinput');
-          if (devices.length > 0) {
-            startCamera(devices[currentDeviceIndex].deviceId);
-          }
+        .then((stream) => {
+          const video = document.getElementById("video");
+          video.srcObject = stream;
         })
-        .catch(error => {
-          console.error("デバイスの取得に失敗しました:", error);
+        .catch((error) => {
+          console.error("カメラにアクセスできませんでした:", error);
         });
 
       document.getElementById("capture").addEventListener("click", () => {
@@ -104,10 +80,56 @@
         console.log("キャプチャした画像のデータURL:", dataURL);
       });
 
-      document.getElementById("toggleCamera").addEventListener("click", () => {
-        currentDeviceIndex = (currentDeviceIndex + 1) % devices.length;
-        startCamera(devices[currentDeviceIndex].deviceId);
-      });
+      let cameraFacingIsUser = true; // デフォルトはインカメラ
+      let facingText = document.getElementById("camera-facing");
+      facingText.innerText = "インカメラ";
+      document.getElementById("btn").onclick = () => {
+        if (cameraFacingIsUser) {
+          facingText.innerText = "アウトカメラ";
+          cameraFacingIsUser = false;
+        } else {
+          facingText.innerText = "インカメラ";
+          cameraFacingIsUser = true;
+        }
+      };
+
+      let localStream;
+      const constraints = {
+        video: {
+          width: 640,
+          height: 480,
+          facingMode: "user", // デフォルトはインカメラ
+        },
+        audio: false,
+      };
+
+      const getStream = (isUser) => {
+        // 直前のストリームを停止する
+        if (localStream !== undefined) {
+          localStream.getVideoTracks().forEach((camera) => {
+            camera.stop();
+            console.log("camera stop");
+          });
+        }
+
+        // 再読み込み
+        constraints.video.facingMode = isUser
+          ? "user"
+          : { exact: "environment" };
+
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then((stream) => {
+            localStream = stream;
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      };
+
+      getStream(true);
     </script>
   </body>
 </html>
