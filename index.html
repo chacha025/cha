@@ -72,11 +72,11 @@
         const downloadButton = document.getElementById("download");
         downloadButton.href = dataURL;
         downloadButton.download = "captured_image.png";
-        downloadButton.style.display = "block";
+        downloadButton.style.display = "block"; // ダウンロードボタンを表示する
 
         // 共有ボタンを設定する
         const shareButton = document.getElementById("share");
-        shareButton.style.display = "block";
+        shareButton.style.display = "block"; // 共有ボタンを表示する
         shareButton.addEventListener("click", () => {
           if (navigator.share) {
             navigator.share({
