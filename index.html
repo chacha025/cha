@@ -57,27 +57,38 @@
     <canvas id="canvas" style="display: none"></canvas>
 
     <script>
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then((stream) => {
-          const video = document.getElementById("video");
-          video.srcObject = stream;
-        })
-        .catch((error) => {
-          console.error("カメラにアクセスできませんでした:", error);
+     let localStream;
+const constraints = {
+    video: {
+        width: 640,
+        height: 480,
+        facingMode: 'user'
+    },
+    audio: false
+};
+
+const getStream = (isUser) => {
+    if (localStream !== undefined) {
+        localStream.getVideoTracks().forEach((camera) => {
+            camera.stop();
+            console.log("camera stop");
         });
+    }
 
-      document.getElementById("capture").addEventListener("click", () => {
-        const canvas = document.getElementById("canvas");
-        const video = document.getElementById("video");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext("2d");
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-        const dataURL = canvas.toDataURL("image/png");
-        console.log("キャプチャした画像のデータURL:", dataURL);
-      });
-    </script>
+    constraints.video.facingMode = isUser ? 'user' : { exact: 'environment' }
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            localStream = stream;
+            video.srcObject = stream;
+            video.play();
+        }).catch(e => {
+            console.log(e)
+        })
+}
+
+getStream(true);
+
   </body>
 </html>
