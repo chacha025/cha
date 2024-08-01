@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>身分証撮影アプリ</title>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+      }
       .camera-container {
         position: relative;
         width: 100%;
@@ -23,7 +32,16 @@
         height: 80%;
         border: 2px dashed red;
         box-sizing: border-box;
-        pointer-events: none; /* ガイド枠がクリックを妨げないようにする */
+        pointer-events: none;
+      }
+      .buttons {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
       }
     </style>
   </head>
@@ -32,8 +50,10 @@
       <video id="video" autoplay muted playsinline></video>
       <div class="guide-frame"></div>
     </div>
-    <button id="capture">撮影</button>
-    <button id="toggleCamera">カメラ切り替え</button>
+    <div class="buttons">
+      <button id="capture">撮影</button>
+      <button id="toggleCamera">カメラ切り替え</button>
+    </div>
     <canvas id="canvas" style="display: none"></canvas>
 
     <script>
@@ -41,14 +61,12 @@
       let currentDeviceIndex = 0;
       let devices = [];
 
-      // カメラのストリームを停止する関数
       function stopStream() {
         if (currentStream) {
           currentStream.getTracks().forEach(track => track.stop());
         }
       }
 
-      // カメラを開始する関数
       function startCamera(deviceId) {
         navigator.mediaDevices
           .getUserMedia({ video: { deviceId: { exact: deviceId } } })
@@ -63,7 +81,6 @@
           });
       }
 
-      // デバイスを取得して内カメラと外カメラをリストアップする
       navigator.mediaDevices.enumerateDevices()
         .then(deviceInfos => {
           devices = deviceInfos.filter(deviceInfo => deviceInfo.kind === 'videoinput');
