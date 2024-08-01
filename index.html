@@ -23,7 +23,7 @@
         height: 80%;
         border: 2px dashed red;
         box-sizing: border-box;
-        pointer-events: none; 
+        pointer-events: none; /* ガイド枠がクリックを妨げないようにする */
       }
     </style>
   </head>
@@ -33,35 +33,24 @@
       <div class="guide-frame"></div>
     </div>
     <button id="capture">撮影</button>
-    <button id="toggle-camera">カメラ切り替え</button>
+    <a id="download" style="display: none;">ダウンロード</a> <!-- ダウンロードリンク -->
     <canvas id="canvas" style="display: none"></canvas>
+    <div>
+      <img id="photo" alt="撮影した画像" />
+    </div>
+
 
     <script>
       navigator.mediaDevices
-  .getUserMedia({ video: true })
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          const video = document.getElementById("video");
+          video.srcObject = stream;
+        })
+        .catch((error) => {
+          console.error("カメラにアクセスできませんでした:", error);
+        });
 
-      let currentStream;
-      let isFrontCamera = true; 
-      function startCamera() {
-        const constraints = {
-          video: {
-            facingMode: isFrontCamera ? 'user' : 'environment',
-          },
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints)
-          .then((stream) => {
-            if (currentStream) {
-              currentStream.getTracks().forEach(track => track.stop()); 
-            }
-            currentStream = stream;
-            const video = document.getElementById("video");
-            video.srcObject = stream;
-          })
-          .catch((error) => {
-            console.error("カメラにアクセスできませんでした:", error);
-          });
-      }
 
       document.getElementById("capture").addEventListener("click", () => {
         const canvas = document.getElementById("canvas");
@@ -69,19 +58,28 @@
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const context = canvas.getContext("2d");
+
+
+        // 画像を水平に反転する
+        context.translate(canvas.width, 0);
+        context.scale(-1, 1);
+
+
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
+
         const dataURL = canvas.toDataURL("image/png");
-        console.log("キャプチャした画像のデータURL:", dataURL);
-      });
+        let photo = document.getElementById("photo");
+        photo.setAttribute("src", dataURL);
 
-      document.getElementById("toggle-camera").addEventListener("click", () => {
-        isFrontCamera = !isFrontCamera;
-        startCamera(); 
-      });
 
-    
-      startCamera();
+        // ダウンロードリンクを設定する
+        const downloadButton = document.getElementById("download");
+        downloadButton.href = dataURL;
+        downloadButton.download = "captured_image.png";
+        downloadButton.style.display = "block";
+      });
     </script>
   </body>
 </html>
+
