@@ -36,7 +36,7 @@
     <a id="download" style="display: none;">ダウンロード</a> <!-- ダウンロードリンク -->
     <canvas id="canvas" style="display: none"></canvas>
     <div>
-      <img id="photo" alt="撮影した画像" style="max-width: 100%;" />
+      <img id="photo" alt="撮影した画像" />
     </div>
 
 
@@ -78,21 +78,6 @@
         downloadButton.href = dataURL;
         downloadButton.download = "captured_image.png";
         downloadButton.style.display = "block";
-
-
-        // 画像をクリックして共有メニューを表示する
-        photo.addEventListener("click", () => {
-          if (navigator.share) {
-            navigator.share({
-              title: 'Captured Image',
-              text: 'Check out this captured image!',
-              url: dataURL,
-            })
-            .catch((error) => console.error('Error sharing:', error));
-          } else {
-            alert("このブラウザでは共有機能がサポートされていません");
-          }
-        });
       });
     </script>
   </body>
