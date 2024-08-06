@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ハンバーガーメニュー</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,10 +26,6 @@
         .menu-icon {
             font-size: 30px;
             cursor: pointer;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            z-index: 4;
         }
 
         .nav-menu {
@@ -87,7 +84,7 @@
             border: none;
             padding: 10px 15px;
             position: absolute;
-            left: 10px;
+            right: 10px;
             top: 10px;
             cursor: pointer;
             z-index: 4;
@@ -100,7 +97,6 @@
 </head>
 <body>
     <header>
-        <button class="back-button" id="back-button">戻る</button>
         <div class="menu-icon" id="menu-icon">&#9776;</div>
         <nav id="nav-menu" class="nav-menu">
             <ul>
@@ -110,6 +106,7 @@
                 <li><a href="#">お問い合わせ</a></li>
             </ul>
         </nav>
+        <button class="back-button" id="back-button">戻る</button>
     </header>
     <div class="overlay" id="overlay"></div>
     <script>
