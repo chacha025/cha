@@ -19,8 +19,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative; /* 位置を固定するために relative を設定 */
-            z-index: 2; /* メニューより上に表示されるように z-index を設定 */
+            position: relative;
+            z-index: 2;
         }
 
         .menu-icon {
@@ -31,14 +31,14 @@
         .nav-menu {
             display: none;
             position: absolute;
-            top: 100%; /* ヘッダーの下にメニューが表示されるように設定 */
+            top: 100%;
             left: 0;
             width: 100%;
             background-color: #333;
             overflow: hidden;
-            height: 0; /* 初期状態では高さを0にする */
-            transition: height 0.3s ease-out; /* 高さのアニメーション */
-            z-index: 3; /* 背景オーバーレイより上に表示されるように設定 */
+            height: 0;
+            transition: height 0.3s ease-out;
+            z-index: 3;
         }
 
         .nav-menu ul {
@@ -58,26 +58,40 @@
             display: block;
         }
 
-        /* メニューが表示されたときの状態 */
         .nav-menu.show {
-            height: auto; /* 自動で高さを設定する */
+            height: auto;
             display: block;
         }
 
-        /* 背景を暗くするオーバーレイ */
         .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒 */
+            background-color: rgba(0, 0, 0, 0.5);
             display: none;
-            z-index: 1; /* メニューより下に表示されるように設定 */
+            z-index: 1;
         }
 
         .overlay.show {
             display: block;
+        }
+
+        .back-button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            cursor: pointer;
+            z-index: 4;
+        }
+
+        .back-button:hover {
+            background-color: #555;
         }
     </style>
 </head>
@@ -92,6 +106,7 @@
                 <li><a href="#">お問い合わせ</a></li>
             </ul>
         </nav>
+        <button class="back-button" id="back-button">戻る</button>
     </header>
     <div class="overlay" id="overlay"></div>
     <script>
@@ -99,25 +114,28 @@
             var menuIcon = document.getElementById("menu-icon");
             var navMenu = document.getElementById("nav-menu");
             var overlay = document.getElementById("overlay");
+            var backButton = document.getElementById("back-button");
 
             menuIcon.addEventListener("click", function() {
-                // メニューの表示状態をトグルする
                 if (navMenu.classList.contains("show")) {
                     navMenu.classList.remove("show");
-                    navMenu.style.height = "0"; // メニューを非表示にするとき高さを0に
-                    overlay.classList.remove("show"); // オーバーレイを非表示
+                    navMenu.style.height = "0";
+                    overlay.classList.remove("show");
                 } else {
                     navMenu.classList.add("show");
-                    navMenu.style.height = navMenu.scrollHeight + "px"; // メニューの高さを内容に合わせて設定
-                    overlay.classList.add("show"); // オーバーレイを表示
+                    navMenu.style.height = navMenu.scrollHeight + "px";
+                    overlay.classList.add("show");
                 }
             });
 
-            // オーバーレイをクリックしたときにメニューとオーバーレイを非表示にする
             overlay.addEventListener("click", function() {
                 navMenu.classList.remove("show");
-                navMenu.style.height = "0"; // メニューを非表示にするとき高さを0に
-                overlay.classList.remove("show"); // オーバーレイを非表示
+                navMenu.style.height = "0";
+                overlay.classList.remove("show");
+            });
+
+            backButton.addEventListener("click", function() {
+                window.history.back();
             });
         });
     </script>
