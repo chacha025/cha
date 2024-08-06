@@ -1,18 +1,24 @@
-<input type="file" id="imageUpload">
-<script>
-    const imageUpload = document.getElementById('imageUpload');
-    imageUpload.addEventListener('change', (event) => {
-        const file = event.target.files[0];
-        // FormDataを使って画像データをサーバーに送信
-        const formData = new FormData();
-        formData.append('image', file);
-        fetch('/upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then  
-(data => console.log(data))
-        .catch(error => console.error('Error:', error));
-    });
-</script>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ハンバーガーメニュー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="menu-icon" id="menu-icon">&#9776;</div>
+        <nav id="nav-menu" class="nav-menu">
+            <ul>
+                <li><a href="home.html">ホーム</a></li>
+                <li><a href="#">サービス</a></li>
+                <li><a href="#">会社情報</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </header>
+    <script src="style.js"></script>
+</body>
+</html>
+
