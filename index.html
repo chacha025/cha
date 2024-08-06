@@ -27,7 +27,7 @@
             font-size: 30px;
             cursor: pointer;
             position: absolute;
-            right: 10px;
+            left: 10px; /* 左に配置 */
             top: 10px;
             z-index: 4;
         }
@@ -88,7 +88,7 @@
             border: none;
             padding: 10px 15px;
             position: absolute;
-            left: 10px;
+            right: 10px; /* 右に配置 */
             top: 10px;
             cursor: pointer;
             z-index: 4;
@@ -101,8 +101,8 @@
 </head>
 <body>
     <header>
-        <button class="back-button" id="back-button">戻る</button>
         <div class="menu-icon" id="menu-icon">&#9776;</div>
+        <button class="back-button" id="back-button">戻る</button>
         <nav id="nav-menu" class="nav-menu">
             <ul>
                 <li><a href="home.html">ホーム</a></li>
