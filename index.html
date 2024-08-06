@@ -35,7 +35,7 @@
         .nav-menu {
             display: none;
             position: absolute;
-            top: 100%;
+            top: 100%; /* ヘッダーの下に表示 */
             left: 0;
             width: 100%;
             background-color: #333;
@@ -43,6 +43,11 @@
             height: 0;
             transition: height 0.3s ease-out;
             z-index: 3;
+        }
+
+        .nav-menu.show {
+            display: block; /* メニューが表示されるように修正 */
+            height: auto;
         }
 
         .nav-menu ul {
@@ -59,11 +64,6 @@
         .nav-menu ul li a {
             color: white;
             text-decoration: none;
-            display: block;
-        }
-
-        .nav-menu.show {
-            height: auto;
             display: block;
         }
 
@@ -87,61 +87,3 @@
             color: white;
             border: none;
             padding: 10px 15px;
-            position: absolute;
-            right: 10px; /* 右に配置 */
-            top: 10px;
-            cursor: pointer;
-            z-index: 4;
-        }
-
-        .back-button:hover {
-            background-color: #555;
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="menu-icon" id="menu-icon">&#9776;</div>
-        <button class="back-button" id="back-button">戻る</button>
-        <nav id="nav-menu" class="nav-menu">
-            <ul>
-                <li><a href="home.html">ホーム</a></li>
-                <li><a href="#">サービス</a></li>
-                <li><a href="#">会社情報</a></li>
-                <li><a href="#">お問い合わせ</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="overlay" id="overlay"></div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var menuIcon = document.getElementById("menu-icon");
-            var navMenu = document.getElementById("nav-menu");
-            var overlay = document.getElementById("overlay");
-            var backButton = document.getElementById("back-button");
-
-            menuIcon.addEventListener("click", function() {
-                if (navMenu.classList.contains("show")) {
-                    navMenu.classList.remove("show");
-                    navMenu.style.height = "0";
-                    overlay.classList.remove("show");
-                } else {
-                    navMenu.classList.add("show");
-                    navMenu.style.height = navMenu.scrollHeight + "px";
-                    overlay.classList.add("show");
-                }
-            });
-
-            overlay.addEventListener("click", function() {
-                navMenu.classList.remove("show");
-                navMenu.style.height = "0";
-                overlay.classList.remove("show");
-            });
-
-            backButton.addEventListener("click", function() {
-                window.history.back();
-            });
-        });
-    </script>
-</body>
-</html>
