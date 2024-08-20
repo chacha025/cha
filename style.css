@@ -48,7 +48,8 @@ body {
 
 
 #tops,
-#bottoms {
+#bottoms
+#topstemp{
   background-color: orange;
   color: black;
   padding: 40px 70px;
