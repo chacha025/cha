@@ -1,56 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PSDレイヤーの抽出</title>
-    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
-  </head>
-
-  <body>
+    <style>
+        #layer-image {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/psd.js/1.0.6/psd.min.js"></script>
+</head>
+<body>
     <h1>PSDから特定のレイヤーを表示</h1>
+    <input type="file" id="file-input" accept=".psd" />
     <img id="layer-image" alt="PSD Layer Image" />
 
-    <py-script>
-      pip install psd-tools
-      from psd_tools import PSDImage
-      from PIL import Image
-      import io
-      from js import document, console
-      import base64
+    <script>
+        document.getElementById('file-input').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    const arrayBuffer = event.target.result;
+                    
+                    // Check if PSD is defined
+                    if (typeof PSD === 'undefined') {
+                        console.error('PSD library is not loaded.');
+                        return;
+                    }
+                    
+                    // Use the library to parse the PSD file
+                    PSD.fromArrayBuffer(arrayBuffer).then(psd => {
+                        const targetLayerName = 'ベタ塗り1';
+                        const layer = psd.tree().children().find(layer => layer.name === targetLayerName);
 
-      try:
-          # PSDファイルのパス
-          psd_path = 'a.psd'
+                        if (layer) {
+                            layer.toPng().then(png => {
+                                const imgElement = document.getElementById('layer-image');
+                                imgElement.src = png;
+                            }).catch(err => {
+                                console.error('Failed to convert layer to PNG:', err);
+                            });
+                        } else {
+                            console.log(`Layer '${targetLayerName}' not found.`);
+                        }
+                    }).catch(err => {
+                        console.error('Failed to load PSD file:', err);
+                    });
+                };
 
-          # 抽出するレイヤーの名前
-          target_layer_name = 'ベタ塗り1'
-
-          # PSDファイルを開く
-          psd = PSDImage.open(psd_path)
-
-          # 指定したレイヤーを探して表示
-          for layer in psd.descendants():
-              if layer.name == target_layer_name:
-                  pil_img = layer.topil()
-                  
-                  # PIL画像をバイナリデータに変換
-                  img_byte_arr = io.BytesIO()
-                  pil_img.save(img_byte_arr, format='PNG')
-                  img_byte_arr = img_byte_arr.getvalue()
-                  
-                  # 画像データをbase64エンコード
-                  img_base64 = base64.b64encode(img_byte_arr).decode('utf-8')
-                  
-                  # HTML内のimgタグに画像を表示
-                  img_element = document.getElementById('layer-image')
-                  img_element.src = f"data:image/png;base64,{img_base64}"
-                  break
-          else:
-              console.log(f"Layer '{target_layer_name}' not found.")
-      except Exception as e:
-          console.log(f"An error occurred: {e}")
-    </py-script>
-  </body>
+                reader.readAsArrayBuffer(file);
+            }
+        });
+    </script>
+</body>
 </html>
