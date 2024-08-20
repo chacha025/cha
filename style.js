@@ -1,4 +1,3 @@
-/* <script> */
 "use strict";
 
 
@@ -499,4 +498,3 @@ document.addEventListener("DOMContentLoaded", function () {
     overlay.classList.remove("show"); // オーバーレイを非表示
   });
 });
-// </script>
