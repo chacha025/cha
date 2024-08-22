@@ -219,3 +219,19 @@ header {
 }
 
 
+
+/* トップスボトムスのボタン */
+#button-container button,#temp{
+  background-color: #ffffe0;
+  color: black;
+  padding: 40px 70px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  font-size: 30px;
+  border: solid #000;
+  border-width: 1px 0px ;
+}
+
+
+
