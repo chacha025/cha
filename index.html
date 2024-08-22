@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>撮影アプリ</title>
-    <style></style>
+    <!-- フォントの埋め込みコード -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=BIZ+UD+Gothic:wght@400;700&display=swap"
+    />
     <link rel="stylesheet" href="style.css" />
     <!-- CSSファイルをリンク -->
   </head>
@@ -55,8 +59,6 @@
       <div id="button-container">
         <!-- ボタンがここに挿入されます -->
       </div>
-      <!-- <button>1</button><button>2</button><button>3</button><button>4</button
-      ><button>5</button> -->
       <button id="temp">デモ版はこのボタン</button>
     </div>
     <!-- 撮影注意画面 -->
@@ -74,7 +76,7 @@
           <!-- ガイドフレーム -->
           <img
             class="guide-frame"
-            src="maruma-ku-illust3.png"
+            src="前面 のコピー (1).png"
             alt="ガイド画像がでます"
           />
           <!-- 追加: タイマー表示 -->
@@ -83,6 +85,7 @@
         <!-- 撮影ボタン -->
         <button id="capture">撮影</button>
         <button id="toggle-camera">カメラ切り替え</button>
+        <button id="guidebtn">ガイドフレームの色</button>
 
 
         <!-- ↓カメラの付属 -->
@@ -108,18 +111,45 @@
       <button id="Shootingfinish">進む</button>
     </div>
     <!-- トップスの場合の袖選択画面3つ -->
-    <div class="scr" id="sleeve1"><p>袖について1</p></div>
-    <div class="scr" id="sleeve2"><p>袖について2</p></div>
-    <div class="scr" id="sleeve3"><p>袖について3</p></div>
+    <div class="scr" id="sleeve1">
+      <p>袖と背面部分は<br />同じデザイン（色や柄）ですか</p>
+      <!-- 袖3に遷移 -->
+      <button onclick="handleAnswer('yes', 'sleeve1')">はい</button>
+      <!-- 袖2に遷移 -->
+      <button onclick="handleAnswer('no', 'sleeve1')">いいえ</button>
+    </div>
+    <div class="scr" id="sleeve2">
+      <p>袖のデザインを選んでください</p>
+      <!-- 袖3に遷移 -->
+      <button onclick="handleAnswer('yes', 'sleeve2')">
+        無地、ワンポイントのみ
+      </button>
+      <!-- 袖の撮影をする -->
+      <button onclick="handleAnswer('no', 'sleeve2')">柄、デザインあり</button>
+    </div>
+    <div class="scr" id="sleeve3">
+      <p>背面にデザインがありますか</p>
+      <!-- 前面を使用する -->
+      <button onclick="handleAnswer('yes', 'sleeve3')">入っている</button>
+      <!-- 背面を使用する -->
+      <button onclick="handleAnswer('no', 'sleeve3')">入っていない</button>
+    </div>
 
 
-    <!-- 確認画面（最終） -->
+    <!-- 確認画面（最終）11 -->
     <div class="scr" id="finalconfirmation">
       <p>完成画像をだす</p>
+      <p>↓袖の切り抜き画像をデバッグ</p>
+      <canvas id="input" style="display: none"></canvas>
+      <canvas id="output"></canvas>
+
+
       <a id="download" style="display: none">ダウンロード</a>
       <button id="retakeAll">撮り直す</button>
       <button id="finish">撮影終了</button>
     </div>
+
+
     <!-- 最終画面 -->
     <div class="scr">
       <p>撮影終了</p>
@@ -134,3 +164,5 @@
     <!-- JSファイルをリンク -->
   </body>
 </html>
+
+
