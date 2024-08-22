@@ -1,3 +1,4 @@
+/* <script> */
 "use strict";
 
 
@@ -16,6 +17,14 @@ function showScreen(index) {
 showScreen(screenCount);
 
 
+//画面遷移（表示）を関数に。
+function ScreenTransition(n) {
+  screenCount = n;
+  console.log(screenCount);
+  showScreen(screenCount);
+}
+
+
 let katagami = 0;
 //↑型紙の種類がトップス＝1,ボトムス＝2
 
@@ -24,17 +33,13 @@ let katagami = 0;
 const kiyakudoui = document
   .getElementById("kiyakudoui")
   .addEventListener("click", () => {
-    screenCount = 1;
-    console.log(screenCount);
-    showScreen(screenCount);
+    ScreenTransition(1);
   });
 //トップスボトムスボタン
 const tops = document.getElementById("tops").addEventListener("click", () => {
   katagami = 1;
   katagamiEvent();
-  screenCount = 2;
-  console.log(screenCount);
-  showScreen(screenCount);
+  ScreenTransition(2);
 });
 const bottoms = document
   .getElementById("bottoms")
@@ -43,18 +48,14 @@ const bottoms = document
     katagamiEvent();
 
 
-    screenCount = 2;
-    console.log(screenCount);
-    showScreen(screenCount);
+    ScreenTransition(2);
   });
 //内カメ外カメ設定ボタン
 //内↓
 const incamera = document
   .getElementById("incamera")
   .addEventListener("click", () => {
-    screenCount = 3;
-    console.log(screenCount);
-    showScreen(screenCount);
+    ScreenTransition(3);
   });
 //外カメ
 const outcamera = document
@@ -64,9 +65,7 @@ const outcamera = document
     startCamera();
 
 
-    screenCount = 3;
-    console.log(screenCount);
-    showScreen(screenCount);
+    ScreenTransition(3);
   });
 
 
@@ -80,13 +79,13 @@ const guidebtn = document
   .addEventListener("click", () => {
     if (framecolor == "red") {
       console.log(guideframe);
-      const newImageUrl = "フレーム青.png"; // ここに新しい画像のURLを指定
+      const newImageUrl = "Tシャツアイコン青.png"; // ここに新しい画像のURLを指定
       // 画像要素のsrc属性を変更
       guideframe.setAttribute("src", newImageUrl);
       framecolor = "blue";
     } else {
       console.log(guideframe);
-      const newImageUrl = "フレーム赤.png"; // ここに新しい画像のURLを指定
+      const newImageUrl = "Tシャツアイコン7.png"; // ここに新しい画像のURLを指定
       // 画像要素のsrc属性を変更
       guideframe.setAttribute("src", newImageUrl);
       framecolor = "red";
@@ -96,17 +95,12 @@ const guidebtn = document
 
 //テンプレ選択画面
 const temp = document.getElementById("temp").addEventListener("click", () => {
-  screenCount = 4;
-  console.log(screenCount);
-  showScreen(screenCount);
+  ScreenTransition(4);
 });
 
 
 function katagamiEvent() {
   // JavaScriptでボタンを挿入するコード
-  // document.addEventListener("DOMContentLoaded", () => {});
-
-
   // idはボタンコンテナ
   const buttonContainer = document.getElementById("button-container");
 
@@ -130,6 +124,7 @@ function katagamiEvent() {
 
 
   if (katagami == 1) {
+    //トップスの場合
     // 1から5までのボタンを生成して挿入
     for (let i = 0; i < topstemp.length; i++) {
       // 新しいボタン要素を作成
@@ -138,6 +133,7 @@ function katagamiEvent() {
       buttonContainer.appendChild(button); // コンテナにボタンを追加
     }
   } else if (katagami == 2) {
+    //ボトムスの場合
     // ボタンを生成して挿入
     for (let i = 0; i < bottomstemp.length; i++) {
       // 新しいボタン要素を作成
@@ -165,8 +161,8 @@ const startshoot = document
     console.log(screenCount);
     showScreen(screenCount);
   });
-
-
+let IMG1;
+let IMG2;
 //次の撮影に進むボタン
 const nextshoot = document
   .getElementById("nextshoot")
@@ -174,6 +170,8 @@ const nextshoot = document
     //背面撮影＝count2にする
     //カメラ画面にもどるようにする
     captureCount++;
+    IMG1 = dataURL;
+    console.log(IMG1);
 
 
     shootText();
@@ -216,10 +214,115 @@ const RetakeB = document
 const Shootingfinish = document
   .getElementById("Shootingfinish")
   .addEventListener("click", () => {
-    screenCount = 11; //袖飛ばして確認画面
-    console.log(screenCount);
-    showScreen(screenCount);
+    IMG2 = dataURL;
+    console.log(IMG1);
+    console.log(IMG2);
+
+
+    if (katagami == 1) {
+      //トップスなので、袖画面に行く
+      screenCount = 8;
+      console.log(screenCount);
+      showScreen(screenCount);
+    } else {
+      screenCount = 11; //袖飛ばして確認画面
+      console.log(screenCount);
+      showScreen(screenCount);
+    }
   });
+//袖画面の実装
+function handleAnswer(answer, currentSleeve) {
+  // 袖の画面３つ（画面8,9,10）の選択肢分岐
+  //   document.getElementById(currentSleeve).style.display = "none";
+
+
+  if (currentSleeve === "sleeve1") {
+    if (answer === "yes") {
+      console.log("yes");
+      //   document.getElementById("sleeve3").style.display = "block";
+      //質問3にうつる
+      ScreenTransition(10);
+    } else {
+      //   document.getElementById("sleeve2").style.display = "block";
+      //質問2にうつる
+      ScreenTransition(9);
+    }
+  } else if (currentSleeve === "sleeve2") {
+    if (answer === "yes") {
+      //   document.getElementById("sleeve3").style.display = "block";
+      //質問3にうつる
+      ScreenTransition(10);
+    } else {
+      window.alert("撮影を行う");
+    }
+  } else if (currentSleeve === "sleeve3") {
+    if (answer === "yes") {
+      window.alert("前面を使用");
+      //きりぬき
+      imageUrl = IMG1; // ここに画像のURLを指定
+      Cut();
+
+
+      ScreenTransition(11);
+    } else {
+      window.alert("背面を使用");
+
+
+      //きりぬき
+      imageUrl = IMG2; // ここに画像のURLを指定
+      Cut();
+
+
+      ScreenTransition(11);
+    }
+  }
+}
+//袖の切り抜き
+let imageUrl;
+function Cut() {
+  console.log(imageUrl);
+  const img = new Image();
+  img.onload = function () {
+    // Canvasを設定
+    const canvasinput = document.getElementById("input");
+    const ctx = canvasinput.getContext("2d");
+    canvasinput.width = img.width;
+    canvasinput.height = img.height;
+    ctx.drawImage(img, 0, 0);
+
+
+    // 切り取りたい範囲を指定
+    const cutWidth = 200; // 切り取り幅
+    const cutHeight = 200; // 切り取り高さ
+
+
+    // 画像の中心から切り取り範囲を計算
+    const x = (img.width - cutWidth) / 2;
+    const y = (img.height - cutHeight) / 2;
+
+
+    // 切り取り範囲を描画するための新しいCanvas
+    const outputCanvas = document.getElementById("output");
+    const outputCtx = outputCanvas.getContext("2d");
+    outputCanvas.width = cutWidth;
+    outputCanvas.height = cutHeight;
+
+
+    // 切り取り範囲を描画
+    outputCtx.drawImage(
+      canvasinput,
+      x,
+      y,
+      cutWidth,
+      cutHeight,
+      0,
+      0,
+      cutWidth,
+      cutHeight
+    );
+  };
+  img.src = imageUrl; // 画像URLを設定
+}
 
 
 //撮影終了後
@@ -305,6 +408,9 @@ function shootText() {
 }
 
 
+let dataURL;
+
+
 function captureImage() {
   //撮影と、画像表示のイベント
 
@@ -325,7 +431,14 @@ function captureImage() {
 
   //画像を表示
   context.drawImage(video, 0, 0, canvas.width, canvas.height);
-  const dataURL = canvas.toDataURL("image/png");
+
+
+  // ガイドフレームを描画8/20
+  const guideFrame = document.querySelector(".guide-frame");
+  context.drawImage(guideFrame, 0, 0, canvas.width, canvas.height);
+
+
+  dataURL = canvas.toDataURL("image/png");
 
 
   if (captureCount === 1) {
@@ -498,3 +611,6 @@ document.addEventListener("DOMContentLoaded", function () {
     overlay.classList.remove("show"); // オーバーレイを非表示
   });
 });
+// </script>
+
+
