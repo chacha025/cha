@@ -35,6 +35,8 @@ button {
 }
 #tezyun {
   text-align: left;
+  margin: 0 auto;
+  width: 80%; /* 必要に応じて調整 */
 }
 #kiyakudoui,
 #startshoot {
@@ -240,11 +242,13 @@ header {
   top: 100%; /* ヘッダーの下にメニューが表示されるように設定 */
   left: 0;
   width: 100%;
-  background-color: #333;
+  background-color: #ffffff;
   overflow: hidden;
   height: 0; /* 初期状態では高さを0にする */
   transition: height 0.3s ease-out; /* 高さのアニメーション */
+  color: #333;
 }
+
 
 #nav-menu ul {
   list-style: none;
@@ -254,7 +258,7 @@ header {
 
 #nav-menu ul li {
   padding: 10px;
-  border-bottom: 1px solid #444;
+  border-bottom: 1px solid #999;
 }
 
 #nav-menu ul li a {
@@ -292,4 +296,9 @@ header {
   font-size: 2em;
   color: red;
   display: none; /* 初期状態では表示しない */
+}
+
+/* 撮影時の注意点 */
+#Beforeshooting{
+  text-align: center;
 }
