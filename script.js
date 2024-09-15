@@ -1,6 +1,9 @@
 /* <script> */
 "use strict";
 
+const menuIcon = document.getElementById("menu-icon");
+const backbutton = document.getElementById("back-button");
+
 //画面遷移（表示非表示）の設定
 let screenCount = 0;
 const screennum = document.getElementsByClassName("scr");
@@ -9,6 +12,14 @@ console.log(screennum); //確認用コンソール
 function showScreen(index) {
   for (let i = 0; i < screennum.length; i++) {
     screennum[i].style.display = i === index ? "block" : "none";
+  }
+
+  if (index === 0) {
+    backbutton.style.display = "none";
+    menuIcon.style.display = "none";
+  } else {
+    backbutton.style.display = "block";
+    menuIcon.style.display = "block";
   }
 }
 // 初期表示
@@ -71,20 +82,70 @@ const outcamera = document
     ScreenTransition(3);
   });
 
+//srcに見本画像、後ろにフレーム画像
 //トップスの選択肢
 let topstemp = [
-  { src: "Demotops.png", value: "Tシャツアイコン青.png" },
-  { src: "Demotops.png", value: "tops2" },
-  { src: "Demotops.png", value: "tops3" },
-  { src: "Demotops.png", value: "tops4" },
-  { src: "Demotops.png", value: "non-temp" },
-]; //後にimgファイルにする
+  {
+    name: "ショート丈Tシャツ",
+    src: "Demotops.png",
+    front: "images/shortT_front.png",
+    back: "images/shortT_back.png",
+    sleeve: "images/shortT_sleeve.png",
+  },
+  {
+    name: "オーバーサイズTシャツ",
+    src: "Demotops.png",
+    front: "images/bigSilhouette_front.png",
+    back: "images/bigSilhouette_back.png",
+    sleeve: "images/bigSilhouette_sleeve.png",
+  },
+  {
+    name: "パーカー",
+    src: "Demotops.png",
+    front: "images/hoodie_front.png",
+    back: "images/hoodie_back.png",
+    sleeve: "images/hoodie_sleeve.png",
+  },
+  {
+    name: "シャツ・ブラウス",
+    src: "Demotops.png",
+    front: "images/longSleeve_front.png",
+    back: "images/longSleeve_back.png",
+    sleeve: "images/longSleeve_sleeve.png",
+  },
+  {
+    //テンプレートを使用しない
+    src: "Demotops.png",
+    front: "Coming soon",
+    back: "",
+    sleeve: "",
+  },
+];
 //ボトムスの選択肢
 let bottomstemp = [
-  { src: "Demotops.png", value: "bottoms1" },
-  { src: "Demotops.png", value: "bottoms2" },
-  { src: "Demotops.png", value: "non-temp" },
+  {
+    name: "台形ミニスカート",
+    src: "Demotops.png",
+    front: "images/miniskirt_front.png",
+    back: "images/miniskirt_back.png",
+  },
+  {
+    name: "パンツ",
+    src: "Demotops.png",
+    front: "images/pants_front.png",
+    back: "images/pants_back.png",
+  },
+  {
+    //テンプレートを使用しない
+    src: "Demotops.png",
+    front: "Coming soon",
+    back: "",
+  },
 ];
+let katagamiFreamchangefront = "frontfreame";
+let katagamiFreamchangeback = "backfreame";
+let katagamiFreamchangesleeve = "sleevefreame";
+let templateName = "テンプレート名";
 
 function katagamiEvent() {
   // JavaScriptでボタンを挿入するコード
@@ -120,17 +181,26 @@ function katagamiEvent() {
     img.alt = "Image Button";
     img.style.maxWidth = "100%";
     img.style.height = "auto";
-    img.style.transition = "transform .5s";
+    // img.style.transition = "transform .5s";
 
     // ボタンに画像を追加
     button.appendChild(img);
     // ボタンのクリックイベントを設定
-    button.addEventListener("click", () => katagamiFreamchange(item.value));
+    button.addEventListener("click", () => {
+      katagamiFreamchange(item.front);
+      katagamiFreamchangefront = item.front;
+      katagamiFreamchangeback = item.back;
+      templateName = item.name;
+      if (katagami === 1) {
+        katagamiFreamchangesleeve = item.sleeve;
+      }
+    });
     // コンテナにボタンを追加
     console.log(f_area);
     f_area.appendChild(button);
   });
 }
+
 //テンプレ選択画面デバッグ用ボタン
 const temp = document.getElementById("temp").addEventListener("click", () => {
   updateIndicator(1);
@@ -144,7 +214,7 @@ function katagamiFreamchange(x) {
   updateIndicator(1);
   ScreenTransition(4);
   console.log(x);
-  const newImageUrl = x;
+  const newImageUrl = x; //frontのURL
   // 画像要素のsrc属性を変更
   guideFrame.setAttribute("src", newImageUrl);
 }
@@ -152,20 +222,73 @@ const guideFrame = document.querySelector(".guide-frame");
 
 //ガイドフレームの多色化ボタン（videoタップ)
 let framecolor = "red"; //初期値
+function appendColorToFileName(fileName, color) {
+  // 拡張子を分離
+  const parts = fileName.split(".");
+  const baseName = parts[0];
+  const extension = parts[1];
+
+  // 色を追加して新しいファイル名を作成
+  const newFileName = `${baseName}_${color}.${extension}`;
+  return newFileName;
+}
 const cameracontainer = document
   .querySelector(".camera-container")
   .addEventListener("click", () => {
-    if (framecolor == "red") {
-      // ここに新しい画像のURLを指定
-      const newImageUrl = "Tシャツアイコン青.png";
-      // 画像要素のsrc属性を変更
-      guideFrame.setAttribute("src", newImageUrl);
-      framecolor = "blue";
+    //前面
+    if (captureCount === 1) {
+      if (framecolor == "red") {
+        // ここに新しい画像のURL_白を指定
+        const newImageUrl = appendColorToFileName(
+          katagamiFreamchangefront,
+          "white"
+        );
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "white";
+      } else if (framecolor == "white") {
+        // ここに新しい画像のURL_黒を指定
+        const newImageUrl = appendColorToFileName(
+          katagamiFreamchangefront,
+          "black"
+        );
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "black";
+      } else {
+        // ここに新しい画像のURL_黒を指定
+        const newImageUrl = katagamiFreamchangefront;
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "red";
+      }
     } else {
-      const newImageUrl = "Tシャツアイコン7.png"; // ここに新しい画像のURLを指定
-      // 画像要素のsrc属性を変更
-      guideFrame.setAttribute("src", newImageUrl);
-      framecolor = "red";
+      //背面時
+      if (framecolor == "red") {
+        // ここに新しい画像のURL_白を指定
+        const newImageUrl = appendColorToFileName(
+          katagamiFreamchangeback,
+          "white"
+        );
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "white";
+      } else if (framecolor == "white") {
+        // ここに新しい画像のURL_黒を指定
+        const newImageUrl = appendColorToFileName(
+          katagamiFreamchangeback,
+          "black"
+        );
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "black";
+      } else {
+        // ここに新しい画像のURL_黒を指定
+        const newImageUrl = katagamiFreamchangeback;
+        // 画像要素のsrc属性を変更
+        guideFrame.setAttribute("src", newImageUrl);
+        framecolor = "red";
+      }
     }
   });
 
@@ -377,6 +500,10 @@ function handleAnswer(answer, currentSleeve) {
       //質問2にうつる
       //撮影に移る
       updateIndicator(5);
+      const guideframe2 = document.querySelector(".guide-frame2");
+      guideframe2.setAttribute("src", katagamiFreamchangesleeve);
+      console.log(guideframe2);
+
       ScreenTransition(9);
     }
   } else if (currentSleeve === "sleeve2") {
@@ -470,6 +597,7 @@ const finish = document
   .getElementById("download")
   .addEventListener("click", () => {
     screenCount = 12;
+    document.getElementById("templateValue").textContent = templateName;
     console.log(screenCount);
     showScreen(screenCount);
   });
@@ -515,13 +643,20 @@ function startCamera() {
     });
 }
 
-//テキストを変える
+//テキストを変える+フレーム
 function shootText() {
   const shootingtext = document.getElementById("shootingtext");
   if (captureCount < 2) {
     shootingtext.textContent = "前面を撮影してください";
+    // フレーム画像を変更
+    guideFrame.setAttribute("src", katagamiFreamchangefront);
+
+    console.log(guideFrame);
   } else if ((captureCount = 2)) {
     shootingtext.textContent = "背面を撮影してください";
+    guideFrame.setAttribute("src", katagamiFreamchangeback);
+
+    console.log(guideFrame);
   }
 }
 
@@ -587,7 +722,6 @@ function captureImage() {
 
   //画像に名前をつけて、ダウンロード可能に
   downloadButton.download = "captured_image.png";
-  downloadButton.style.display = "block";
 }
 
 //内カメ外カメのトグル
@@ -621,15 +755,15 @@ document.getElementById("capture").addEventListener("click", () => {
 });
 
 //メニュー↓
-// 画像のURLリストを定義
+// インジケーター画像URLリスト
 const IndicatorList = [
-  "path/to/your/image1.png", // 型紙選択 scr3
-  "path/to/your/image2.png", // 前面撮影 scr4 scr5
-  "path/to/your/image3.png", // 撮影画像の確認（１） scr6
-  "path/to/your/image4.png", // 背面撮影 scr5(shot2)
-  "path/to/your/image5.png", // 撮影画像の確認（２）  scr7
-  "path/to/your/image6.png", // 袖のデザイン scr8 scr9 scr10
-  "path/to/your/image7.png", // 完成 scr11 scr12
+  "images/indicator_1.png", // テンプレート選択 scr3
+  "images/indicator_2.png", // 前面撮影 scr4 scr5
+  "images/indicator_3.png", // 撮影画像の確認（１） scr6
+  "images/indicator_4.png", // 背面撮影 scr5(shot2)
+  "images/indicator_5.png", // 撮影画像の確認（２）  scr7
+  "images/indicator_6.png", // 袖のデザイン scr8 scr9 scr10
+  "images/indicator_7.png", // 完成 scr11 scr12
 ];
 
 //インジケーター
@@ -728,7 +862,6 @@ backButton.addEventListener("click", function () {
 let seni = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
-  const menuIcon = document.getElementById("menu-icon");
   const navMenu = document.getElementById("nav-menu");
   const overlay = document.getElementById("overlay");
 
