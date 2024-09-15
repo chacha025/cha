@@ -1,6 +1,10 @@
 body {
   margin: 0;
 }
+button {
+  background: transparent; /* 画像の背景を透過 */
+  border: none;
+}
 
 /* 追加分CSS↓ */
 #finalconfirmation {
@@ -34,8 +38,6 @@ body {
 }
 #kiyakudoui,
 #startshoot {
-  background-color: orange;
-  color: black;
   padding: 20px 40px;
   margin: 20px;
   border: none;
@@ -224,8 +226,12 @@ header {
 }
 
 #menu-icon {
-  font-size: 30px;
-  cursor: pointer;
+  background: transparent; /* 画像の背景を透過 */
+  border: none;
+}
+#back-button {
+  background: transparent; /* 画像の背景を透過 */
+  border: none;
 }
 
 #nav-menu {
