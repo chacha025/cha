@@ -14,14 +14,19 @@
   </head>
 
   <body>
-    <header>
+    <header style="background-image: url('images/header.png')">
       <!-- <h3>タブメニュー</h3> -->
-      <button id="back-button">戻る</button>
+      <button id="back-button">
+        <img src="images/backbtn.png" alt="戻る" />
+      </button>
 
       <!-- インジケーターがでます -->
       <span id="indicator"></span>
 
-      <div id="menu-icon">&#9776;</div>
+      <div id="menu-icon">
+        <!-- &#9776; -->
+        <img src="images/menuicon.png" alt="メニュー" />
+      </div>
       <nav id="nav-menu">
         <ul>
           <li id="li1">服の種類選択画面に戻る</li>
@@ -52,8 +57,10 @@
           ⑤＝＝＝＝
         </p>
       </div>
-      <button id="kiyakudoui">スタート</button>
-      <button onclick="showScreen(8);">開発用：袖画面に飛ぶ</button>
+      <button id="kiyakudoui">
+        <img src="images/startbtn.png" alt="スタート" />
+      </button>
+      <button onclick="showScreen(11)">デバッグ用ボタン</button>
     </div>
 
     <!-- タイプ選択画面 scr1 -->
@@ -121,7 +128,9 @@
         服のガイドが赤色で表示されます。<br />
         少しはみ出すように撮影してください。<br />
       </p>
-      <button id="startshoot">撮影開始</button>
+      <button id="startshoot">
+        <img src="images/satueikaisi.png" alt="撮影開始" />
+      </button>
     </div>
     <!-- 撮影画面 scr5 -->
     <div class="scr" id="shooting">
@@ -153,8 +162,12 @@
       <p>プレビュー（前）</p>
       <div class="photostyle">
         <img id="photoF" alt="ここに撮影した前面画像がでます" />
-        <button class="retakestyle" id="RetakeF">撮りなおす</button>
-        <button id="nextshoot">背面撮影に進む</button>
+        <button class="retakestyle" id="RetakeF">
+          <img src="images/retake.png" alt="撮りなおす" />
+        </button>
+        <button id="nextshoot">
+          <img src="images/nextShot.png" alt="保存して進む" />
+        </button>
       </div>
     </div>
     <!-- 確認画面（背） scr7 -->
@@ -162,8 +175,12 @@
       <p>プレビュー（背）</p>
       <div class="photostyle">
         <img id="photoB" alt="ここに撮影した背面画像がでます" />
-        <button class="retakestyle" id="RetakeB">撮りなおす</button>
-        <button id="Shootingfinish">進む</button>
+        <button class="retakestyle" id="RetakeB">
+          <img src="images/retake.png" alt="撮りなおす" />
+        </button>
+        <button id="Shootingfinish">
+          <img src="images/nextShot.png" alt="保存して進む" />
+        </button>
       </div>
     </div>
     <!-- トップスの場合の袖選択画面3つ  scr8-->
@@ -214,8 +231,12 @@
       <p>この画像をテンプレートに使用します</p>
 
       <img id="photoS" alt="ここに撮影した袖画像がでます" />
-      <button class="retakestyle" id="RetakeS">撮りなおす</button>
-      <button id="sleeveFinish">進む</button>
+      <button class="retakestyle" id="RetakeS">
+        <img src="images/retake.png" alt="撮りなおす" />
+      </button>
+      <button id="sleeveFinish">
+        <img src="images/nextShot.png" alt="保存して進む" />
+      </button>
 
       <canvas id="input" style="display: none"></canvas>
       <canvas id="output" style="visibility: hidden"></canvas>
@@ -227,14 +248,14 @@
 
       <img src="" alt="着せ付けたイメージ画像?" />
       <button id="retakeAll">撮り直す</button>
-      <a id="download" style="display: none">ダウンロード</a>
+      <a id="download">ダウンロード</a>
     </div>
 
     <!-- 最終画面 scr12 -->
     <div class="scr">
       <p>
-        作成した型紙～<br />
-        ダウンロードした<br />
+        作成したテンプレートは<br />
+        「 <span id="templateValue"></span> 」 <br />ダウンロードした<br />
         ーー<br />
         ーー
       </p>
@@ -259,12 +280,16 @@
         ④ <br />
         ⑤＝＝＝＝
       </p>
-      <button class="TabBack">前の画面に戻る</button>
+      <button class="TabBack">
+        <img src="images/tabbtn.png" alt="前の画面に戻る" />
+      </button>
     </div>
     <!-- メニューからの遷移先画面 scr14 -->
     <div class="scr" id="kiyakuTab">
       <p>利用規約</p>
-      <button class="TabBack">前の画面に戻る</button>
+      <button class="TabBack">
+        <img src="images/tabbtn.png" alt="前の画面に戻る" />
+      </button>
     </div>
 
     <!-- ここからJS !!! -->
