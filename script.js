@@ -42,31 +42,70 @@ const kiyakudoui = document
   .addEventListener("click", () => {
     ScreenTransition(1);
   });
+
 //トップスボトムスボタン
-const hiddenbottom = document.getElementById("hiddenbottom");
+//9/15
+// 子ボタングループをトグル表示する関数
+function toggleVisibility(buttonGroupId) {
+  // すべての子ボタングループを取得
+  const allButtonGroups = document.querySelectorAll(".hidden-buttons");
 
-const tops = document.getElementById("tops").addEventListener("click", () => {
-  katagami = 1;
-  katagamiEvent();
-  ScreenTransition(2);
-  hiddenbottom.style.display = "none";
-  incamera.style.display = "block";
-});
-const bottoms = document
-  .getElementById("bottoms")
-  .addEventListener("click", () => {
-    katagami = 2;
+  // 指定されたIDの子ボタングループを取得
+  const targetGroup = document.getElementById(buttonGroupId);
 
-    katagamiEvent();
-    ScreenTransition(2);
-    hiddenbottom.style.display = "block";
-    incamera.style.display = "none";
+  let anyButtonGroupVisible = false; //dress用
+
+  // 各子ボタングループについて処理
+  allButtonGroups.forEach((group) => {
+    if (group === targetGroup) {
+      // トグル表示
+      group.style.display = group.style.display === "block" ? "none" : "block";
+      if (group.style.display === "block") {
+        anyButtonGroupVisible = true;
+      }
+      if (buttonGroupId === "tops-buttons") {
+        const hiddenbottom = document.getElementById("hiddenbottom");
+        hiddenbottom.style.display =
+          hiddenbottom.style.display === "none" ? "block" : "none";
+      }
+    } else {
+      // 他の子ボタングループは非表示にする
+      group.style.display = "none";
+    }
   });
+  // `#dress` ボタンの表示/非表示を設定
+  document.getElementById("dress").style.display = anyButtonGroupVisible
+    ? "none"
+    : "block";
+}
+
+// const hiddenbottom = document.getElementById("hiddenbottom");
+
+// const tops = document.getElementById("tops").addEventListener("click", () => {
+//   katagami = 1;
+//   katagamiEvent();
+//   ScreenTransition(2);
+//   // hiddenbottom.style.display = "none";
+//   // incamera.style.display = "block";
+// });
+// const bottoms = document
+//   .getElementById("bottoms")
+//   .addEventListener("click", () => {
+//     katagami = 2;
+
+//     katagamiEvent();
+//     ScreenTransition(2);
+//     // hiddenbottom.style.display = "block";
+//     // incamera.style.display = "none";
+//   });
 //内カメ外カメ設定ボタン
 //内↓
 const incamera = document.getElementById("incamera");
 
 incamera.addEventListener("click", () => {
+  //トップス内カメ
+  katagami = 1;
+  katagamiEvent();
   // インジケーターを更新
   updateIndicator(0);
   ScreenTransition(3);
@@ -77,6 +116,21 @@ const outcamera = document
   .addEventListener("click", () => {
     isFrontCamera = !isFrontCamera;
     startCamera();
+    //トップス外カメ
+    katagami = 1;
+    katagamiEvent();
+
+    updateIndicator(0);
+    ScreenTransition(3);
+  });
+const bottom_outcamera = document
+  .getElementById("bottom_outcamera")
+  .addEventListener("click", () => {
+    isFrontCamera = !isFrontCamera;
+    startCamera();
+    //ボトムス
+    katagami = 2;
+    katagamiEvent();
 
     updateIndicator(0);
     ScreenTransition(3);
@@ -87,35 +141,35 @@ const outcamera = document
 let topstemp = [
   {
     name: "ショート丈Tシャツ",
-    src: "Demotops.png",
+    src: "images/shortT_icon.png",
     front: "images/shortT_front.png",
     back: "images/shortT_back.png",
     sleeve: "images/shortT_sleeve.png",
   },
   {
     name: "オーバーサイズTシャツ",
-    src: "Demotops.png",
+    src: "images/bigSilhouette_icon.png",
     front: "images/bigSilhouette_front.png",
     back: "images/bigSilhouette_back.png",
     sleeve: "images/bigSilhouette_sleeve.png",
   },
   {
     name: "パーカー",
-    src: "Demotops.png",
+    src: "images/hoodie_icon.png",
     front: "images/hoodie_front.png",
     back: "images/hoodie_back.png",
     sleeve: "images/hoodie_sleeve.png",
   },
   {
     name: "シャツ・ブラウス",
-    src: "Demotops.png",
+    src: "images/longSleeve_icon.png",
     front: "images/longSleeve_front.png",
     back: "images/longSleeve_back.png",
     sleeve: "images/longSleeve_sleeve.png",
   },
   {
     //テンプレートを使用しない
-    src: "Demotops.png",
+    src: "images/non_temp.png",
     front: "Coming soon",
     back: "",
     sleeve: "",
@@ -125,19 +179,19 @@ let topstemp = [
 let bottomstemp = [
   {
     name: "台形ミニスカート",
-    src: "Demotops.png",
+    src: "images/miniskirt_icon.png",
     front: "images/miniskirt_front.png",
     back: "images/miniskirt_back.png",
   },
   {
     name: "パンツ",
-    src: "Demotops.png",
+    src: "images/pants_icon.png",
     front: "images/pants_front.png",
     back: "images/pants_back.png",
   },
   {
     //テンプレートを使用しない
-    src: "Demotops.png",
+    src: "images/non_temp.png",
     front: "Coming soon",
     back: "",
   },
@@ -646,14 +700,18 @@ function startCamera() {
 //テキストを変える+フレーム
 function shootText() {
   const shootingtext = document.getElementById("shootingtext");
+  //9/16テキスト→画像に変更
   if (captureCount < 2) {
-    shootingtext.textContent = "前面を撮影してください";
+    // shootingtext.textContent = "前面を撮影してください";
+    shootingtext.setAttribute("src", "images/text_4.png");
     // フレーム画像を変更
     guideFrame.setAttribute("src", katagamiFreamchangefront);
 
     console.log(guideFrame);
   } else if ((captureCount = 2)) {
-    shootingtext.textContent = "背面を撮影してください";
+    // shootingtext.textContent = "背面を撮影してください";
+    shootingtext.setAttribute("src", "images/text_5.png");
+
     guideFrame.setAttribute("src", katagamiFreamchangeback);
 
     console.log(guideFrame);
@@ -698,7 +756,7 @@ function captureImage() {
   if (captureCount === 1) {
     //前面撮影時
     const photoF = document.getElementById("photoF");
-   // photoF.setAttribute("src", dataURL);
+    photoF.setAttribute("src", dataURL);
     //↓確認用コンソール
     console.log("キャプチャした画像のデータURL:", dataURL);
     //確認画面へ遷移
