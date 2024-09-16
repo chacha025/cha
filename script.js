@@ -698,7 +698,7 @@ function captureImage() {
   if (captureCount === 1) {
     //前面撮影時
     const photoF = document.getElementById("photoF");
-    photoF.setAttribute("src", dataURL);
+   // photoF.setAttribute("src", dataURL);
     //↓確認用コンソール
     console.log("キャプチャした画像のデータURL:", dataURL);
     //確認画面へ遷移
