@@ -738,6 +738,7 @@ function shootText() {
 }
 
 let dataURL;
+let photoList=[]
 
 function captureImage() {
   //撮影と、画像表示のイベント
@@ -780,13 +781,12 @@ function captureImage() {
   //↑↑
 
   dataURL = canvas.toDataURL(""image/png"");
-  let photoList=[]
 
   if (captureCount === 1) {
     //前面撮影時
     const photoF = document.getElementById(""photoF"");
     photoF.setAttribute(""src"", dataURL);
-    photoList[0]=dateURL
+    photoList[0]=dateURL;
     //↓確認用コンソール
     console.log(""キャプチャした画像のデータURL:"", dataURL);
     console.log(photoList);
