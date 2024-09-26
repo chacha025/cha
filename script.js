@@ -780,7 +780,7 @@ function captureImage() {
   //↑↑
 
   dataURL = canvas.toDataURL("image/png");
-  photoList = [];
+  let photoList = [];
   
   if (captureCount === 1) {
     //前面撮影時
