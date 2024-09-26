@@ -8,10 +8,18 @@ button {
   background: transparent; /* 画像の背景を透過 */
   border: none;
 }
-/* 標準フォントの設定 */
+/* BIZ UDゴシックの設定 */
 @font-face {
   font-family: "BIZ UD Gothic";
   src: url("fonts/BIZUDGothic-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+/* HG丸ゴシックM-PROの設定 */
+@font-face {
+  font-family: "HG丸ゴシックM-PRO";
+  src: url("fonts/HGMaruGothicMPRO.TTF") format("truetype");
+  /* url("path/to/HG丸ゴシックM-PRO.woff") format("woff"), */
   font-weight: normal;
   font-style: normal;
 }
@@ -72,8 +80,13 @@ button {
   height: 300px;
 }
 
+/* #templateValue  */
 #final-screen {
   text-align: center;
+  font-family: "HG丸ゴシックM-PRO", sans-serif;
+  font-weight: bold;
+  color: #505050;
+  font-size: 17px;
 }
 #final-screen .text {
   margin-top: 13px;
@@ -84,9 +97,7 @@ button {
 #final-screen p {
   margin: 0;
 }
-#templateValue {
-  font-size: 17px;
-}
+
 .text_8_9-div {
   text-align: center;
   height: 167px;
@@ -327,11 +338,12 @@ button {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  height: 300px;
+  /* height: 300px; */
   /* overflow: hidden; */
   background-size: cover; /* 画像をガイドフレームに合わせて拡大縮小 */
   pointer-events: none; /* ガイド枠がクリックを妨げないようにする */
 }
+
 .btnGroup {
   position: absolute;
   top: 84%;
