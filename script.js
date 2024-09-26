@@ -37,6 +37,9 @@ function updateIndicator(scr) {
   indicator.appendChild(img);
 }
 
+let photoList = [];
+
+
 //画面遷移（表示非表示）の設定
 let screenCount = 0;
 const screennum = document.getElementsByClassName("scr");
@@ -782,7 +785,6 @@ function captureImage() {
   //↑↑
 
   dataURL = canvas.toDataURL("image/png");
-  let photoList = [];
 
   if (captureCount === 1) {
     //前面撮影時
