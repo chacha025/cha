@@ -435,8 +435,9 @@ const Shootingfinish = document
     IMG2 = dataURL;
     console.log(IMG1);
     console.log(IMG2);
-    photoList[0]= "IMG1";
-    photoList[1]= "IMG2";
+    photoList[0]= IMG1;
+    photoList[1]= IMG2;
+    console.log(photoList);
 
     if (katagami == 1) {
       //トップスなので、袖画面に行く
@@ -559,6 +560,8 @@ const sleeveFinish = document
     //最終確認画面に遷移
     updateIndicator(6);
     showScreen(11);
+    photoList[2] = sleeveDataUrl;
+    console.log(photoList);
   });
 //9/14変更↑
 
