@@ -786,7 +786,7 @@ function captureImage() {
     //前面撮影時
     const photoF = document.getElementById("photoF");
     photoF.setAttribute("src", dataURL);
-    photoList[0]= photoF;
+    photoList[0]= "photoF";
     //↓確認用コンソール
     console.log("キャプチャした画像のデータURL:", dataURL);
     console.log( photoList);
