@@ -4,39 +4,6 @@
 const menuIcon = document.getElementById("menu-icon");
 const backbutton = document.getElementById("back-button");
 
-//メニュー↓
-// インジケーター画像URLリスト
-const IndicatorList = [
-  "images/indicator_1.png", // テンプレート選択 scr3
-  "images/indicator_2.png", // 前面撮影 scr4 scr5
-  "images/indicator_3.png", // 撮影画像の確認（１） scr6
-  "images/indicator_4.png", // 背面撮影 scr5(shot2)
-  "images/indicator_5.png", // 撮影画像の確認（２）  scr7
-  "images/indicator_6.png", // 袖のデザイン scr8 scr9 scr10
-  "images/indicator_7.png", // 完成 scr11 scr12
-  "images/Appname.png", //アプリタイトル
-];
-
-//インジケーター
-const indicator = document.getElementById("indicator");
-function updateIndicator(scr) {
-  // インデックスが8の場合は何も表示しない
-  if (scr === 8) {
-    indicator.innerHTML = ""; // 既存の内容をクリア
-    return; // 画像を追加せずに終了
-  }
-
-  const imgSrc = IndicatorList[scr]; // 選ばれた画像のURLを取得
-  // 画像を挿入
-  const img = document.createElement("img");
-  img.src = imgSrc;
-  img.alt = `Indicator画像${scr + 1}`; // 画像の代替テキストを設定
-
-  // 既存の内容をクリアして画像を追加
-  indicator.innerHTML = ""; // 既存の内容をクリア
-  indicator.appendChild(img);
-}
-
 //画面遷移（表示非表示）の設定
 let screenCount = 0;
 const screennum = document.getElementsByClassName("scr");
@@ -56,12 +23,6 @@ function showScreen(index) {
   } else {
     backbutton.style.display = "block";
     menuIcon.style.display = "block";
-  }
-
-  if (index === 0) {
-    updateIndicator(7);
-  } else if (index === 1) {
-    updateIndicator(8);
   }
 }
 // 初期表示
@@ -763,19 +724,10 @@ function captureImage() {
 
   // ガイドフレームを描画9/14
   const guideFrame = document.querySelector(".guide-frame");
-  const frameX = (canvas.width - guideFrame.width) / 2;
-  const frameY = (canvas.height - guideFrame.height) / 2;
-  console.log("video size" + video.width, video.height);
-  console.log("canvas size" + canvas.width, canvas.height);
-  console.log("guide size" + guideFrame.width, guideFrame.height);
+  const frameX = (canvas.width - 300) / 2;
+  const frameY = (canvas.height - 300) / 2;
 
-  context.drawImage(
-    guideFrame,
-    frameX,
-    frameY,
-    guideFrame.width,
-    guideFrame.height
-  );
+  context.drawImage(guideFrame, frameX, frameY, 300, 300);
 
   //↑↑
 
@@ -839,6 +791,38 @@ document.getElementById("capture").addEventListener("click", () => {
   updateTimer(); // 初期カウントを表示
   let countdown = setInterval(updateTimer, 1000); // 1秒ごとにカウントダウン
 });
+
+//メニュー↓
+// インジケーター画像URLリスト
+const IndicatorList = [
+  "images/indicator_1.png", // テンプレート選択 scr3
+  "images/indicator_2.png", // 前面撮影 scr4 scr5
+  "images/indicator_3.png", // 撮影画像の確認（１） scr6
+  "images/indicator_4.png", // 背面撮影 scr5(shot2)
+  "images/indicator_5.png", // 撮影画像の確認（２）  scr7
+  "images/indicator_6.png", // 袖のデザイン scr8 scr9 scr10
+  "images/indicator_7.png", // 完成 scr11 scr12
+];
+
+//インジケーター
+const indicator = document.getElementById("indicator");
+function updateIndicator(scr) {
+  // インデックスが8の場合は何も表示しない
+  if (scr === 8) {
+    indicator.innerHTML = ""; // 既存の内容をクリア
+    return; // 画像を追加せずに終了
+  }
+
+  const imgSrc = IndicatorList[scr]; // 選ばれた画像のURLを取得
+  // 画像を挿入
+  const img = document.createElement("img");
+  img.src = imgSrc;
+  img.alt = `Indicator画像${scr + 1}`; // 画像の代替テキストを設定
+
+  // 既存の内容をクリアして画像を追加
+  indicator.innerHTML = ""; // 既存の内容をクリア
+  indicator.appendChild(img);
+}
 
 //戻るボタン
 var backbtn = true;
