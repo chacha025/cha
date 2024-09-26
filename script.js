@@ -432,6 +432,8 @@ const Shootingfinish = document
     IMG2 = dataURL;
     console.log(IMG1);
     console.log(IMG2);
+    photoList[0]= "IMG1";
+    photoList[1]= "IMG2";
 
     if (katagami == 1) {
       //トップスなので、袖画面に行く
@@ -786,10 +788,8 @@ function captureImage() {
     //前面撮影時
     const photoF = document.getElementById("photoF");
     photoF.setAttribute("src", dataURL);
-    photoList[0]= "photoF";
     //↓確認用コンソール
     console.log("キャプチャした画像のデータURL:", dataURL);
-    console.log( photoList);
     
     //確認画面へ遷移
     screenCount = 6;
