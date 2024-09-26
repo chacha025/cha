@@ -790,6 +790,7 @@ function captureImage() {
     photoF.setAttribute("src", dataURL);
     //↓確認用コンソール
     console.log("キャプチャした画像のデータURL:", dataURL);
+
     
     //確認画面へ遷移
     screenCount = 6;
