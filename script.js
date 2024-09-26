@@ -659,6 +659,9 @@ function Cut() {
     );
   };
   img.src = imageUrl; // 画像URLを設定
+  console.log(imageUrl);
+  photoList[2] = imageUrl;
+  console.log(photoList);
 }
 
 //撮影終了後
