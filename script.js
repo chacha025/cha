@@ -601,7 +601,7 @@ function handleAnswer(answer, currentSleeve) {
       window.alert("前面を使用");
       //きりぬき
       imageUrl = IMG1; // ここに画像のURLを指定
-      Cut();
+      //Cut();
       updateIndicator(6);
       seni = screenCount; //戻ってくる画面を代入する
       ScreenTransition(11);
@@ -610,7 +610,7 @@ function handleAnswer(answer, currentSleeve) {
 
       //きりぬき
       imageUrl = IMG2; // ここに画像のURLを指定
-      Cut();
+     // Cut();
 
       seni = screenCount; //戻ってくる画面を代入する
       updateIndicator(6);
